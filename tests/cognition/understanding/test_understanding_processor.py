@@ -33,3 +33,18 @@ def test_process_greeting():
     )
 
     assert understanding.intent == IntentType.GREETING
+
+
+def test_process_entities():
+    processor = UnderstandingProcessor()
+
+    understanding = processor.process(
+        "Meu cachorro Thor tomou vacina."
+    )
+
+    assert len(understanding.entities) == 1
+
+    entity = understanding.entities[0]
+
+    assert entity.text == "Thor"
+    assert entity.entity_type.name == "PET"

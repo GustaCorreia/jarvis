@@ -1,6 +1,4 @@
-from app.cognition.understanding.extractors.intent_extractor import (
-    IntentExtractor,
-)
+from app.cognition.intent.extractor import IntentExtractor
 from app.cognition.understanding.intent_type import IntentType
 
 

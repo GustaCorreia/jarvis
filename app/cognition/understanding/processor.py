@@ -1,12 +1,8 @@
 from __future__ import annotations
 
 from app.cognition.core.processor import Processor
-from app.cognition.understanding.extractors.entity_extractor import (
-    EntityExtractor,
-)
-from app.cognition.understanding.extractors.intent_extractor import (
-    IntentExtractor,
-)
+from app.cognition.entities.extractor import EntityExtractor
+from app.cognition.intent.extractor import IntentExtractor
 from app.cognition.understanding.understanding import Understanding
 
 

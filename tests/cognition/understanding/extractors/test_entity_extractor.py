@@ -1,7 +1,5 @@
 from app.cognition.entities.entity_type import EntityType
-from app.cognition.understanding.extractors.entity_extractor import (
-    EntityExtractor,
-)
+from app.cognition.entities.extractor import EntityExtractor
 
 
 def test_extract_pet():

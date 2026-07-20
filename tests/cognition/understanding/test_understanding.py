@@ -9,6 +9,6 @@ def test_create_understanding():
 
     assert understanding.text == "Meu cachorro Thor tomou vacina."
     assert understanding.intent == IntentType.UNKNOWN
-    assert understanding.emotion == "neutral"
+    assert understanding.emotion is None
     assert understanding.entities == []
     assert understanding.confidence == 0.0

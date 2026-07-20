@@ -3,7 +3,7 @@ from __future__ import annotations
 from pydantic import Field
 
 from app.cognition.core.cognitive_object import CognitiveObject
-from app.cognition.entities.entity import Entity
+from app.cognition.entities.entity_mention import EntityMention
 from app.cognition.understanding.intent_type import IntentType
 
 
@@ -22,6 +22,6 @@ class Understanding(CognitiveObject):
 
     emotion: str = "neutral"
 
-    entities: list[Entity] = Field(default_factory=list)
+    entities: list[EntityMention] = Field(default_factory=list)
 
     confidence: float = 0.0

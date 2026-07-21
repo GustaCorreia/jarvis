@@ -13,3 +13,4 @@ def test_create_understanding():
     assert understanding.entities == []
     assert understanding.date is None
     assert understanding.confidence == 0.0
+    assert understanding.time is None

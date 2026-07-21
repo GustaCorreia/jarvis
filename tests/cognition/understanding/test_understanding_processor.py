@@ -2,6 +2,7 @@ from app.cognition.understanding.intent_type import IntentType
 from app.cognition.understanding.processor import (
     UnderstandingProcessor,
 )
+from datetime import time
 
 
 def test_process_information():
@@ -58,3 +59,16 @@ def test_process_date():
     )
 
     assert understanding.date is not None
+
+
+def test_process_time():
+    processor = UnderstandingProcessor()
+
+    understanding = processor.process(
+        "A consulta será às 14:30."
+    )
+
+    assert understanding.time is not None
+    assert understanding.time.hour == 14
+    assert understanding.time.minute == 30
+    assert understanding.time.normalized == time(14, 30)

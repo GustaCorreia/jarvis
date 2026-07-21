@@ -48,3 +48,13 @@ def test_process_entities():
 
     assert entity.text == "Thor"
     assert entity.entity_type.name == "PET"
+
+
+def test_process_date():
+    processor = UnderstandingProcessor()
+
+    understanding = processor.process(
+        "Minha consulta será amanhã."
+    )
+
+    assert understanding.date is not None

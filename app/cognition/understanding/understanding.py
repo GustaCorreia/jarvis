@@ -5,6 +5,7 @@ from pydantic import Field
 from app.cognition.core.cognitive_object import CognitiveObject
 from app.cognition.emotion.emotion_mention import EmotionMention
 from app.cognition.entities.entity_mention import EntityMention
+from app.cognition.temporal.date_mention import DateMention
 from app.cognition.understanding.intent_type import IntentType
 
 
@@ -24,5 +25,7 @@ class Understanding(CognitiveObject):
     emotion: EmotionMention | None = None
 
     entities: list[EntityMention] = Field(default_factory=list)
+
+    date: DateMention | None = None
 
     confidence: float = 0.0

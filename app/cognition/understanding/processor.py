@@ -4,6 +4,7 @@ from app.cognition.core.processor import Processor
 from app.cognition.emotion.extractor import EmotionExtractor
 from app.cognition.entities.extractor import EntityExtractor
 from app.cognition.intent.extractor import IntentExtractor
+from app.cognition.temporal.date_extractor import DateExtractor
 from app.cognition.understanding.understanding import Understanding
 
 
@@ -18,10 +19,12 @@ class UnderstandingProcessor(Processor[str, Understanding]):
         intent_extractor: IntentExtractor | None = None,
         entity_extractor: EntityExtractor | None = None,
         emotion_extractor: EmotionExtractor | None = None,
+        date_extractor: DateExtractor | None = None,
     ) -> None:
         self._intent_extractor = intent_extractor or IntentExtractor()
         self._entity_extractor = entity_extractor or EntityExtractor()
         self._emotion_extractor = emotion_extractor or EmotionExtractor()
+        self._date_extractor = date_extractor or DateExtractor()
 
     def process(self, data: str) -> Understanding:
         return Understanding(
@@ -29,4 +32,13 @@ class UnderstandingProcessor(Processor[str, Understanding]):
             intent=self._intent_extractor.process(data),
             emotion=self._emotion_extractor.process(data),
             entities=self._entity_extractor.process(data),
+            date=self._first_date(data),
         )
+
+    def _first_date(self, text: str):
+        dates = self._date_extractor.process(text)
+
+        if not dates:
+            return None
+
+        return dates[0]

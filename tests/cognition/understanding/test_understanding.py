@@ -11,4 +11,5 @@ def test_create_understanding():
     assert understanding.intent == IntentType.UNKNOWN
     assert understanding.emotion is None
     assert understanding.entities == []
+    assert understanding.date is None
     assert understanding.confidence == 0.0

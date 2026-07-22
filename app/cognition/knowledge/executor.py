@@ -7,8 +7,12 @@ from app.cognition.knowledge.knowledge_operation_type import (
     KnowledgeOperationType,
 )
 from app.domain.entity import Entity
+from app.domain.fact import Fact
 from app.domain.operations.add_entity_operation import (
     AddEntityOperation,
+)
+from app.domain.operations.add_fact_operation import (
+    AddFactOperation,
 )
 
 
@@ -38,15 +42,35 @@ class KnowledgeExecutor:
 
             if (
                 operation.operation
-                == KnowledgeOperationType.CREATE_NODE
+                != KnowledgeOperationType.CREATE_NODE
             ):
-                entity = Entity()
+                continue
 
-                result = self._memory.apply(
-                    AddEntityOperation(entity),
+            entity = Entity()
+
+            entity_result = self._memory.apply(
+                AddEntityOperation(entity),
+                self._world,
+            )
+
+            results.append(entity_result)
+
+            if not entity_result.success:
+                continue
+
+            for attribute, value in operation.payload.items():
+
+                fact = Fact(
+                    entity_id=entity.id,
+                    attribute=attribute,
+                    value=value,
+                )
+
+                fact_result = self._memory.apply(
+                    AddFactOperation(fact),
                     self._world,
                 )
 
-                results.append(result)
+                results.append(fact_result)
 
         return results

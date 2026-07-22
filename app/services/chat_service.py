@@ -1,13 +1,17 @@
-from app.providers.mock_provider import MockProvider
+from app.conversation.engine import ConversationEngine
 
 
 class ChatService:
     """
-    Responsável pela conversa com o usuário.
+    Serviço responsável por conversar com o Jarvis.
+
+    Todas as interfaces (CLI, API, Web, Android...)
+    devem utilizar este serviço.
     """
 
     def __init__(self):
-        self.provider = MockProvider()
+        self.engine = ConversationEngine()
 
     def chat(self, message: str) -> str:
-        return self.provider.generate_response(message)
+        response = self.engine.receive(message)
+        return response.text

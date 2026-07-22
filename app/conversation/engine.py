@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from app.cognition.understanding.intent_type import IntentType
 from app.cognition.understanding.processor import (
     UnderstandingProcessor,
 )
@@ -49,17 +50,17 @@ class ConversationEngine:
         understanding,
     ) -> Response:
 
-        normalized = message.text.strip().lower()
-
         #
-        # Nesta sprint ainda manteremos
-        # o comportamento antigo.
+        # A partir desta sprint a primeira decisão
+        # já utiliza a compreensão da mensagem.
         #
 
-        if normalized in {"oi", "olá", "ola"}:
+        if understanding.intent == IntentType.GREETING:
             return Response(
                 text="Olá! Como posso ajudar?"
             )
+
+        normalized = message.text.strip().lower()
 
         if normalized in {
             "tchau",

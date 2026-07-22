@@ -31,20 +31,6 @@ class IntentExtractor(Processor[str, IntentType]):
         if text.startswith(greetings):
             return IntentType.GREETING
 
-        goodbyes = (
-            "tchau",
-            "até mais",
-            "ate mais",
-            "até logo",
-            "ate logo",
-            "sair",
-            "exit",
-            "quit",
-        )
-
-        if text.startswith(goodbyes):
-            return IntentType.GOODBYE
-
         question_words = (
             "quem",
             "qual",

@@ -33,3 +33,16 @@ def test_extract_unknown():
     extractor = IntentExtractor()
 
     assert extractor.process("") == IntentType.UNKNOWN
+
+def test_goodbye():
+    extractor = IntentExtractor()
+
+    assert (
+        extractor.process("Tchau")
+        == IntentType.GOODBYE
+    )
+
+    assert (
+        extractor.process("exit")
+        == IntentType.GOODBYE
+    )

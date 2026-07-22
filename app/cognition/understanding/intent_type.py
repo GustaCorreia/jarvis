@@ -15,3 +15,5 @@ class IntentType(StrEnum):
     COMMAND = "command"
 
     GREETING = "greeting"
+
+    GOODBYE = "goodbye"

@@ -1,29 +1,33 @@
 from __future__ import annotations
 
+from .conversation import Conversation
 from .models import Message, Response
-from .roles import Role
 
 
 class ConversationEngine:
     """
-    First implementation of Jarvis conversation engine.
+    Coordinates the conversation flow.
 
-    This version contains only the basic conversation flow.
-    Future versions will integrate MemoryEngine,
-    WorldModel and the LLM adapter.
+    This class is responsible for orchestrating the
+    conversation, while Conversation stores the history.
     """
 
+    def __init__(self) -> None:
+        self._conversation = Conversation()
+
+    @property
+    def conversation(self) -> Conversation:
+        return self._conversation
+
     def receive(self, text: str) -> Response:
-        """
-        Processes a user message and returns Jarvis's response.
-        """
 
-        message = Message(
-            role=Role.USER,
-            text=text,
-        )
+        user_message = self._conversation.add_user_message(text)
 
-        return self._process(message)
+        response = self._process(user_message)
+
+        self._conversation.add_assistant_message(response.text)
+
+        return response
 
     def _process(self, message: Message) -> Response:
 

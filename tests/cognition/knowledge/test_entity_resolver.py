@@ -85,3 +85,52 @@ def test_returns_none_when_mention_not_found():
     )
 
     assert result is None
+
+def test_matches_case_insensitive():
+
+    world = WorldModel()
+
+    entity = Entity()
+
+    world.add_entity(entity)
+
+    world.add_fact(
+        Fact(
+            entity_id=entity.id,
+            attribute="mention",
+            value="THOR",
+        )
+    )
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve(
+        make_operation("thor")
+    )
+
+    assert result == entity
+
+
+def test_matches_trimmed_mentions():
+
+    world = WorldModel()
+
+    entity = Entity()
+
+    world.add_entity(entity)
+
+    world.add_fact(
+        Fact(
+            entity_id=entity.id,
+            attribute="mention",
+            value=" Thor ",
+        )
+    )
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve(
+        make_operation("thor")
+    )
+
+    assert result == entity

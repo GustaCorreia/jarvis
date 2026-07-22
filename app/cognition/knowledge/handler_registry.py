@@ -7,6 +7,9 @@ from app.cognition.knowledge.handlers.base_handler import (
 from app.cognition.knowledge.handlers.has_name_handler import (
     HasNameHandler,
 )
+from app.cognition.knowledge.handlers.mentions_handler import (
+    MentionsHandler,
+)
 
 
 class HandlerRegistry:
@@ -20,6 +23,7 @@ class HandlerRegistry:
     def __init__(self) -> None:
         handlers: list[BaseKnowledgeHandler] = [
             HasNameHandler(),
+            MentionsHandler(),
         ]
 
         self._handlers = {

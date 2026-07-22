@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from app.cognition.knowledge.entity_resolver import (
+    EntityResolver,
+)
 from app.cognition.knowledge.knowledge_operation import (
     KnowledgeOperation,
 )
@@ -28,9 +31,11 @@ class KnowledgeExecutor:
         self,
         memory_engine,
         world_model,
+        entity_resolver: EntityResolver,
     ):
         self._memory = memory_engine
         self._world = world_model
+        self._resolver = entity_resolver
 
     def execute(
         self,
@@ -46,17 +51,21 @@ class KnowledgeExecutor:
             ):
                 continue
 
-            entity = Entity()
+            entity = self._resolver.resolve(operation)
 
-            entity_result = self._memory.apply(
-                AddEntityOperation(entity),
-                self._world,
-            )
+            if entity is None:
 
-            results.append(entity_result)
+                entity = Entity()
 
-            if not entity_result.success:
-                continue
+                entity_result = self._memory.apply(
+                    AddEntityOperation(entity),
+                    self._world,
+                )
+
+                results.append(entity_result)
+
+                if not entity_result.success:
+                    continue
 
             for attribute, value in operation.payload.items():
 

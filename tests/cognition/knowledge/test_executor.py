@@ -1,3 +1,6 @@
+from app.cognition.knowledge.entity_resolver import (
+    EntityResolver,
+)
 from app.cognition.knowledge.executor import (
     KnowledgeExecutor,
 )
@@ -31,9 +34,12 @@ def test_executor_creates_entity_and_fact():
 
     memory = MemoryEngine(registry)
 
+    resolver = EntityResolver(world)
+
     executor = KnowledgeExecutor(
         memory,
         world,
+        resolver,
     )
 
     operations = [
@@ -65,6 +71,47 @@ def test_executor_creates_entity_and_fact():
     assert facts[0].value == "Thor"
 
 
+def test_executor_reuses_existing_entity():
+
+    world = WorldModel()
+
+    registry = HandlerRegistry()
+
+    registry.register(AddEntityHandler())
+    registry.register(AddFactHandler())
+
+    memory = MemoryEngine(registry)
+
+    resolver = EntityResolver(world)
+
+    executor = KnowledgeExecutor(
+        memory,
+        world,
+        resolver,
+    )
+
+    operation = KnowledgeOperation(
+        operation=KnowledgeOperationType.CREATE_NODE,
+        target="thor",
+        payload={
+            "mention": "Thor",
+        },
+    )
+
+    executor.execute([operation])
+
+    executor.execute([operation])
+
+    assert world.entity_count == 1
+    assert world.fact_count == 2
+
+    entity = world.entities[0]
+
+    facts = world.find_facts(entity.id)
+
+    assert len(facts) == 2
+
+
 def test_empty_operations():
 
     world = WorldModel()
@@ -76,9 +123,12 @@ def test_empty_operations():
 
     memory = MemoryEngine(registry)
 
+    resolver = EntityResolver(world)
+
     executor = KnowledgeExecutor(
         memory,
         world,
+        resolver,
     )
 
     results = executor.execute([])

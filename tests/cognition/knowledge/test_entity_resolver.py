@@ -134,3 +134,51 @@ def test_matches_trimmed_mentions():
     )
 
     assert result == entity
+
+def test_finds_entity_by_alias():
+
+    world = WorldModel()
+
+    entity = Entity()
+
+    world.add_entity(entity)
+
+    world.add_fact(
+        Fact(
+            entity_id=entity.id,
+            attribute="alias",
+            value="Totó",
+        )
+    )
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve(
+        make_operation("Totó")
+    )
+
+    assert result == entity
+
+def test_alias_is_case_insensitive():
+
+    world = WorldModel()
+
+    entity = Entity()
+
+    world.add_entity(entity)
+
+    world.add_fact(
+        Fact(
+            entity_id=entity.id,
+            attribute="alias",
+            value="  TOTÓ ",
+        )
+    )
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve(
+        make_operation("totó")
+    )
+
+    assert result == entity

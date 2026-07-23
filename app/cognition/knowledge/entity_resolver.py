@@ -4,7 +4,7 @@ from app.domain.entity import Entity
 class EntityResolver:
     """
     Localiza uma entidade existente utilizando
-    a mention armazenada nos Facts.
+    mentions ou aliases armazenados nos Facts.
     """
 
     def __init__(self, world):
@@ -13,10 +13,6 @@ class EntityResolver:
     def _normalize(self, value: str) -> str:
         """
         Normaliza uma mention para comparação.
-
-        Primeira versão:
-        - remove espaços extras
-        - converte para minúsculas
         """
         return value.strip().lower()
 
@@ -36,7 +32,7 @@ class EntityResolver:
             for fact in facts:
 
                 if (
-                    fact.attribute == "mention"
+                    fact.attribute in ("mention", "alias")
                     and self._normalize(fact.value) == mention
                 ):
                     return entity

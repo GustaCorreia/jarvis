@@ -4,6 +4,9 @@ from app.cognition.facts.fact_predicate import FactPredicate
 from app.cognition.knowledge.handlers.base_handler import (
     BaseKnowledgeHandler,
 )
+from app.cognition.knowledge.handlers.belongs_to_handler import (
+    BelongsToHandler,
+)
 from app.cognition.knowledge.handlers.has_name_handler import (
     HasNameHandler,
 )
@@ -24,6 +27,7 @@ class HandlerRegistry:
         handlers: list[BaseKnowledgeHandler] = [
             HasNameHandler(),
             MentionsHandler(),
+            BelongsToHandler(),
         ]
 
         self._handlers = {

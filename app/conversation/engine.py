@@ -4,6 +4,7 @@ from app.cognition.understanding.intent_type import IntentType
 from app.cognition.understanding.processor import (
     UnderstandingProcessor,
 )
+from app.core.cognitive_core import CognitiveCore
 
 from .conversation import Conversation
 from .models import Message, Response
@@ -17,13 +18,21 @@ class ConversationEngine:
     Conversation stores the history.
     """
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        cognitive_core: CognitiveCore | None = None,
+    ) -> None:
         self._conversation = Conversation()
         self._understanding = UnderstandingProcessor()
+        self._cognitive = cognitive_core
 
     @property
     def conversation(self) -> Conversation:
         return self._conversation
+
+    @property
+    def cognitive(self) -> CognitiveCore | None:
+        return self._cognitive
 
     def receive(self, text: str) -> Response:
 
@@ -32,6 +41,14 @@ class ConversationEngine:
         understanding = self._understanding.process(
             user_message.text
         )
+
+        #
+        # Nesta sprint apenas conectamos o
+        # CognitiveCore ao fluxo da conversa.
+        #
+        # O aprendizado automático será
+        # implementado na próxima sprint.
+        #
 
         response = self._process(
             user_message,

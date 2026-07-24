@@ -16,12 +16,10 @@ class EntityResolver:
         """
         return value.strip().lower()
 
-    def resolve(self, operation):
-
-        mention = operation.payload.get("mention")
-
-        if mention is None:
-            return None
+    def resolve_by_mention(
+        self,
+        mention: str,
+    ) -> Entity | None:
 
         mention = self._normalize(mention)
 
@@ -33,8 +31,18 @@ class EntityResolver:
 
                 if (
                     fact.attribute in ("mention", "alias")
-                    and self._normalize(fact.value) == mention
+                    and self._normalize(fact.value)
+                    == mention
                 ):
                     return entity
 
         return None
+
+    def resolve(self, operation):
+
+        mention = operation.payload.get("mention")
+
+        if mention is None:
+            return None
+
+        return self.resolve_by_mention(mention)

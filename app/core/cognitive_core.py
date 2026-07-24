@@ -8,6 +8,8 @@ from app.reasoning import ReasoningEngine
 class CognitiveCore:
     """
     High-level façade for the Jarvis cognitive subsystem.
+
+    All cognitive capabilities should be exposed through this class.
     """
 
     def __init__(
@@ -54,8 +56,44 @@ class CognitiveCore:
         operation = self._builder.build_add_entity(entity)
         return self.learn(operation)
 
+    def learn_text(self, text: str):
+        """
+        Entry point for learning from natural language.
+
+        This method is intentionally introduced before the
+        natural language pipeline is connected.
+
+        Future pipeline:
+
+            text
+                ↓
+        UnderstandingProcessor
+                ↓
+          FactProcessor
+                ↓
+        KnowledgePipeline
+                ↓
+          MemoryEngine
+                ↓
+           WorldModel
+        """
+        raise NotImplementedError(
+            "Natural language learning has not been implemented yet."
+        )
+
     def ask_entity(self, entity_id):
         """
         Retrieves an entity through the ReasoningEngine.
         """
         return self._reasoning.entity_by_id(entity_id)
+
+    def ask(self, question: str):
+        """
+        Entry point for cognitive queries.
+
+        Future versions will use the Understanding layer
+        together with the ReasoningEngine.
+        """
+        raise NotImplementedError(
+            "Natural language querying has not been implemented yet."
+        )

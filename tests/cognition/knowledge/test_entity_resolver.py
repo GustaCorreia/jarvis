@@ -182,3 +182,36 @@ def test_alias_is_case_insensitive():
     )
 
     assert result == entity
+
+def test_resolve_by_mention():
+
+    world = WorldModel()
+
+    entity = Entity()
+
+    world.add_entity(entity)
+
+    world.add_fact(
+        Fact(
+            entity_id=entity.id,
+            attribute="mention",
+            value="Thor",
+        )
+    )
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve_by_mention("Thor")
+
+    assert result == entity
+
+
+def test_resolve_by_mention_returns_none():
+
+    world = WorldModel()
+
+    resolver = EntityResolver(world)
+
+    result = resolver.resolve_by_mention("Thor")
+
+    assert result is None

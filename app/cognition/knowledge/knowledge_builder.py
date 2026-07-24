@@ -13,23 +13,29 @@ class KnowledgeBuilder:
     """
     Converte Facts em KnowledgeOperations.
 
-    O Builder apenas coordena os componentes.
-    Toda a lógica de transformação pertence aos handlers.
+    O Builder não contém regras de negócio.
+    Toda a lógica de transformação pertence aos handlers
+    registrados no HandlerRegistry.
     """
 
     def __init__(self) -> None:
         self._registry = HandlerRegistry()
 
-    def process(
+    def build(
         self,
         facts: list[Fact],
     ) -> list[KnowledgeOperation]:
+        """
+        Converte uma lista de Facts em KnowledgeOperations.
+        """
 
         operations: list[KnowledgeOperation] = []
 
         for fact in facts:
 
-            handler = self._registry.get(fact.predicate)
+            handler = self._registry.get(
+                fact.predicate
+            )
 
             if handler is None:
                 continue
@@ -39,3 +45,14 @@ class KnowledgeBuilder:
             )
 
         return operations
+
+    def process(
+        self,
+        facts: list[Fact],
+    ) -> list[KnowledgeOperation]:
+        """
+        Alias temporário para manter compatibilidade
+        durante a migração da API.
+        """
+
+        return self.build(facts)
